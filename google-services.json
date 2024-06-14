@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1003599694336",
+    "project_id": "push-notificactions-7be31",
+    "storage_bucket": "push-notificactions-7be31.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1003599694336:android:c49a5d4f5e9c9086a666e5",
+        "android_client_info": {
+          "package_name": "com.jeroguzman.delivery1"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAaE224YV8YTOzODe2OQpGt4EOFGkjUkbI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
