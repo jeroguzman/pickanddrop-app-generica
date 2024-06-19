@@ -1,9 +1,7 @@
 import React, { useEffect, useContext, useState, useCallback } from 'react';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import { useFocusEffect } from '@react-navigation/native';
 import TabNavigation from './TabNavigation';
 import { AuthContext } from '../Context/AuthContext';
-import { useOnForegroundFocus } from '../../hooks/useOnForegroundFocus';
 import { usePushNotifications } from '../../hooks/useExpoNotifications';
 import axios from 'axios';
 import PendingPayment from '../Screens/PendingPayment';
@@ -31,6 +29,8 @@ const requestPermissions = async () => {
     }
   }
 };
+
+requestPermissions();
 
 const Stack = createNativeStackNavigator();
 
@@ -61,24 +61,6 @@ export default function AppNav() {
         }
 
   }, [expoPushToken]);
-
-  useOnForegroundFocus(() => {
-    getCourierStatus();
-  }, true);
-
-  const getCourierStatus = async () => {
-    await axios.get(`${url}/couriers/courier-status/${ids}`, {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    })
-    .then((response) => {
-      setStatus(response.data.status);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
 
   return (
       <>

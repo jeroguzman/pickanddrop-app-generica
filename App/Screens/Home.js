@@ -15,7 +15,7 @@ export default function Home({navigation}) {
 
   const isFocused = useIsFocused();
 
-  const { token, ids, url, name, orders, setOrders } = useContext(AuthContext);
+  const { token, ids, url, name, orders, setOrders, setStatus } = useContext(AuthContext);
   const { notificacion, state } = useStore.getState();
 
   const [loading, setLoading] = useState(false);
@@ -23,7 +23,22 @@ export default function Home({navigation}) {
 
   useEffect(() => {
       getOrders();
+      getCourierStatus();
   }, [isFocused]);
+
+  const getCourierStatus = async () => {
+    await axios.get(`${url}/couriers/courier-status/${ids}`, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then((response) => {
+      setStatus(response.data.status);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
 
   useOnForegroundFocus(() => {
     getOrders();
@@ -139,7 +154,7 @@ export default function Home({navigation}) {
                           title="Ver Mapa"
                           type="outline"
                           containerStyle={{borderRadius:10}}
-                          buttonStyle={{ backgroundColor: '#014aad' }}
+                          buttonStyle={{ backgroundColor: '#366030' }}
                           titleStyle={{color:'#fff'}}
                           onPress={() => {
                             Linking.openURL(`https://www.google.com/maps/dir/${item.business.address.split(' ').join('+')}/${item.address.street.split(' ').join('+')}+${item.address.external_number}+${item.address.neighborhood.name.split(' ').join('+')}`);
@@ -149,7 +164,7 @@ export default function Home({navigation}) {
                           title="Llamar"
                           type="outline"
                           containerStyle={{borderRadius:10, marginTop:10}}
-                          buttonStyle={{ backgroundColor: '#014aad' }}
+                          buttonStyle={{ backgroundColor: '#366030' }}
                           titleStyle={{color:'#fff'}}
                           onPress={() => {
                             Linking.openURL(`tel:${item.client.phone_number}`);

@@ -1,12 +1,15 @@
 import { View, Text, TouchableOpacity, Image, ScrollView, Platform } from "react-native";
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import { AuthContext } from "../Context/AuthContext";
 import Icons from "react-native-vector-icons/MaterialIcons";
 import { SafeAreaView } from "react-native-safe-area-context";
 import axios from "axios";
+import { useIsFocused } from "@react-navigation/native";
 
 
 const Options = ({ navigation }) => {
+
+  const isFocused = useIsFocused();
 
   const { logout, name, token, url, ids, status, setStatus } = useContext(AuthContext);
 
@@ -14,6 +17,25 @@ const Options = ({ navigation }) => {
     await axios.put(`${url}/couriers/change-courier-status/${ids}`, {
       status: status === 'CONNECTED' ? 'DISCONNECTED' : 'CONNECTED'
     }, {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    })
+    .then((response) => {
+      setStatus(response.data.status);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
+  useEffect(() => {
+    getCourierStatus();
+  }
+  , [isFocused]);
+
+  const getCourierStatus = async () => {
+    await axios.get(`${url}/couriers/courier-status/${ids}`, {
       headers: {
         'Authorization': `Bearer ${token}`
       }
